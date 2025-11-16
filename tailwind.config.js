@@ -20,11 +20,20 @@ export default {
         mint: {
           light: '#D4F1E8',
           soft: '#A8E6CF'
-        }
+        },
+        'dash-purple': '#2D1A55',
+        'dash-purple-light': '#4A3A75',
+        'dash-bg-start': '#462973',
+        'dash-bg-mid': '#D9A4A4',
+        'dash-bg-end': '#F2D4D4',
+        'dash-event-bg': 'rgba(255, 255, 255, 0.2)',
       },
       fontFamily: {
         playfair: ['"Playfair Display"', 'serif'],
         inter: ['Inter', 'sans-serif']
+      },
+      backgroundImage: {
+        'marble': "url('https://www.transparenttextures.com/patterns/marble-white.png')",
       }
     },
   },
