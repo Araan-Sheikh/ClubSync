@@ -15,6 +15,9 @@ const AdminHeader = () => {
           <ArrowLeft size={28} />
         </button>
         <div className="flex items-center gap-4">
+          <button onClick={() => navigate('/calendar')} className="w-10 h-10 rounded-lg border-2 border-transparent hover:border-white flex items-center justify-center bg-white/10 hover:bg-white/20 transition-all" aria-label="Go to Calendar">
+            <CalendarPlus size={20} className="text-white" />
+          </button>
           <button onClick={() => navigate('/dashboard')} className="w-10 h-10 rounded-lg border-2 border-transparent hover:border-white flex items-center justify-center bg-white/10 hover:bg-white/20 transition-all" aria-label="Go to Dashboard">
             <LayoutGrid size={20} className="text-white" />
           </button>
