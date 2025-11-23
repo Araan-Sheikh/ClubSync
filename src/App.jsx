@@ -6,6 +6,7 @@ import SignInPage from './pages/SignInPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import CalendarPage from './pages/CalendarPage';
 import { useAuth } from './contexts/AuthContext';
 
 const LoadingSpinner = () => (
@@ -81,6 +82,14 @@ function App() {
             <AdminRoute>
               <AdminDashboardPage />
             </AdminRoute>
+          } 
+        />
+        <Route 
+          path="/calendar" 
+          element={
+            <ProtectedRoute>
+              <CalendarPage />
+            </ProtectedRoute>
           } 
         />
       </Routes>
