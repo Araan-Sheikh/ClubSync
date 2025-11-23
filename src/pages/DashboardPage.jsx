@@ -20,7 +20,13 @@ const DashboardHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
           </button>
         </div>
         <div className="flex items-center space-x-2 bg-black/20 backdrop-blur-sm p-2 rounded-full">
-          <button className="p-2 text-white hover:bg-white/20 rounded-full transition-colors"><CalendarDays size={20} /></button>
+          <button 
+            onClick={() => navigate('/calendar')} 
+            className="p-2 text-white hover:bg-white/20 rounded-full transition-colors"
+            data-testid="calendar-nav-button"
+          >
+            <CalendarDays size={20} />
+          </button>
           <button className="p-2 text-white bg-white/20 rounded-full transition-colors"><LayoutGrid size={20} /></button>
           <button onClick={() => navigate('/profile')} className="p-2 text-white hover:bg-white/20 rounded-full transition-colors">
             <User size={20} />
