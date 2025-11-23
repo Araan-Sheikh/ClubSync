@@ -81,7 +81,10 @@ Name
 Email
 
 Password
-(or Google Login – optional future addition)
+
+or 
+
+Google Login 
 
 🛠️ Tech Stack
 
