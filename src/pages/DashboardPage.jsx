@@ -41,18 +41,18 @@ const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
   const navigate = useNavigate();
   const { profile } = useAuth();
   
-  const handleClubClick = (clubId) => {
+ const handleClubClick = (clubId) => {
     onSelectClub(clubId);
     if (onClose) onClose();
   };
 
   const handleAddClubClick = () => {
-    navigate('/admin-dashboard');
+    navigate('/add-club');
     if (onClose) onClose();
   };
 
 
-  return (
+ return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
