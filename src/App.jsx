@@ -86,6 +86,14 @@ function App() {
           } 
         />
         <Route 
+          path="/add-club" 
+          element={
+            <AdminRoute>
+              <AddClubPage />
+            </AdminRoute>
+          } 
+        />
+        <Route 
           path="/calendar" 
           element={
             <ProtectedRoute>
