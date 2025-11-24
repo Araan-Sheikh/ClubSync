@@ -82,6 +82,22 @@ const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
                   </motion.button>
                 );
               })}
+                            
+              {/* Admin-only Add New Club Button */}
+              {profile?.role === 'admin' && (
+                <motion.button
+                  onClick={handleAddClubClick}
+                  className="w-full text-left p-3 rounded-xl border-2 border-dashed border-white/30 transition-all duration-300 flex items-center gap-4 hover:bg-white/15 hover:border-white/40"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  data-testid="add-new-club-button"
+                >
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <Plus className="w-6 h-6 text-white/80" />
+                  </div>
+                  <span className="font-inter font-medium text-white">Add New Club</span>
+                </motion.button>
+              )}
             </nav>
           </div>
         </motion.div>
