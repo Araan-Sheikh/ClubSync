@@ -38,10 +38,19 @@ const DashboardHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
 };
 
 const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const { profile } = useAuth();
+  
   const handleClubClick = (clubId) => {
     onSelectClub(clubId);
     if (onClose) onClose();
   };
+
+  const handleAddClubClick = () => {
+    navigate('/admin-dashboard');
+    if (onClose) onClose();
+  };
+
 
   return (
     <AnimatePresence>
