@@ -6,6 +6,7 @@ import SignInPage from './pages/SignInPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import AddClubPage from './pages/AddClubPage';
 import CalendarPage from './pages/CalendarPage';
 import { useAuth } from './contexts/AuthContext';
 
