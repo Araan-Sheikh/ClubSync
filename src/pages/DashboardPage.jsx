@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, CalendarDays, LayoutGrid, User, ArrowLeft, Bell, Loader2 } from 'lucide-react';
+import { Menu, X, CalendarDays, LayoutGrid, User, ArrowLeft, Bell, Loader2, Plus } from 'lucide-react';
 import { clubs } from '../data/dashboardData';
 import { supabase } from '../supabaseClient';
 
