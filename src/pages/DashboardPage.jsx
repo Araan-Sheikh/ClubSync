@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, CalendarDays, LayoutGrid, User, ArrowLeft, Bell, Loader2, Plus } from 'lucide-react';
-import { clubs } from '../data/dashboardData';
 import { supabase } from '../supabaseClient';
+import { useAuth } from '../contexts/AuthContext';
+import { useClubs } from '../contexts/ClubsContext';
 
 const DashboardHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const DashboardHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
 const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { clubs, loading: clubsLoading } = useClubs();
   
  const handleClubClick = (clubId) => {
     onSelectClub(clubId);
@@ -65,6 +67,12 @@ const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
           <div className="bg-dash-purple h-full rounded-none lg:rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col">
             <h2 className="font-playfair text-4xl font-bold text-white mb-8">CLUBS</h2>
             <nav className="space-y-3">
+                            {clubsLoading ? (
+                <div className="flex justify-center items-center py-8">
+                  <Loader2 className="w-8 h-8 text-white animate-spin" />
+                </div>
+              ) : (
+                <>
               {clubs.map((club) => {
                 const Icon = club.Icon;
                 return (
@@ -97,6 +105,8 @@ const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
                   </div>
                   <span className="font-inter font-medium text-white">Add New Club</span>
                 </motion.button>
+                  )}
+                </>
               )}
             </nav>
           </div>
