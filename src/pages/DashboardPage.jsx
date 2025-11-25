@@ -67,46 +67,46 @@ const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
           <div className="bg-dash-purple h-full rounded-none lg:rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col">
             <h2 className="font-playfair text-4xl font-bold text-white mb-8">CLUBS</h2>
             <nav className="space-y-3">
-                            {clubsLoading ? (
+              {clubsLoading ? (
                 <div className="flex justify-center items-center py-8">
                   <Loader2 className="w-8 h-8 text-white animate-spin" />
                 </div>
               ) : (
-                <>
-              {clubs.map((club) => {
-                const Icon = club.Icon;
-                return (
-                  <motion.button
-                    key={club.id}
-                    onClick={() => handleClubClick(club.id)}
-                    className={`w-full text-left p-3 rounded-xl border border-white/20 transition-all duration-300 flex items-center gap-4 ${selectedClub === club.id ? 'bg-dash-purple-light shadow-inner' : 'hover:bg-white/10'}`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      {Icon && <Icon className="w-6 h-6 text-white/80" />}
-                    </div>
-                    <span className="font-inter font-medium text-white">{club.name}</span>
-                  </motion.button>
-                );
-              })}
-                            
-              {/* Admin-only Add New Club Button */}
-              {profile?.role === 'admin' && (
-                <motion.button
-                  onClick={handleAddClubClick}
-                  className="w-full text-left p-3 rounded-xl border-2 border-dashed border-white/30 transition-all duration-300 flex items-center gap-4 hover:bg-white/15 hover:border-white/40"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  data-testid="add-new-club-button"
-                >
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                    <Plus className="w-6 h-6 text-white/80" />
-                  </div>
-                  <span className="font-inter font-medium text-white">Add New Club</span>
-                </motion.button>
+                <div className="space-y-3">
+                  {clubs.map((club, index) => {
+                    const Icon = club.Icon;
+                    return (
+                      <motion.button
+                        key={club.id || `club-${index}`}
+                        onClick={() => handleClubClick(club.id)}
+                        className={`w-full text-left p-3 rounded-xl border border-white/20 transition-all duration-300 flex items-center gap-4 ${selectedClub === club.id ? 'bg-dash-purple-light shadow-inner' : 'hover:bg-white/10'}`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                          {Icon && <Icon className="w-6 h-6 text-white/80" />}
+                        </div>
+                        <span className="font-inter font-medium text-white">{club.name}</span>
+                      </motion.button>
+                    );
+                  })}
+                  
+                  {profile?.role === 'admin' && (
+                    <motion.button
+                      key="add-club-button"
+                      onClick={handleAddClubClick}
+                      className="w-full text-left p-3 rounded-xl border-2 border-dashed border-white/30 transition-all duration-300 flex items-center gap-4 hover:bg-white/15 hover:border-white/40"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      data-testid="add-new-club-button"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <Plus className="w-6 h-6 text-white/80" />
+                      </div>
+                      <span className="font-inter font-medium text-white">Add New Club</span>
+                    </motion.button>
                   )}
-                </>
+                </div>
               )}
             </nav>
           </div>
@@ -116,18 +116,30 @@ const ClubsPanel = ({ selectedClub, onSelectClub, isOpen, onClose }) => {
   );
 };
 
-const EventsPanel = ({ club, events, loading }) => (
-  <div className="flex-grow p-6 lg:p-8">
-    <h2 className="font-playfair text-4xl font-bold text-white mb-8">EVENTS</h2>
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={club.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        className="space-y-6"
-      >
+const EventsPanel = ({ club, events, loading }) => {
+  if (!club) {
+    return (
+      <div className="flex-grow p-6 lg:p-8">
+        <h2 className="font-playfair text-4xl font-bold text-white mb-8">EVENTS</h2>
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="w-12 h-12 text-white animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-grow p-6 lg:p-8">
+      <h2 className="font-playfair text-4xl font-bold text-white mb-8">EVENTS</h2>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={club.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-6"
+        >
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <Loader2 className="w-12 h-12 text-white animate-spin" />
@@ -166,12 +178,13 @@ const EventsPanel = ({ club, events, loading }) => (
             No events found for this club.
           </div>
         )}
-      </motion.div>
-    </AnimatePresence>
-  </div>
-);
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
 
-const WelcomeView = ({ announcements, loading }) => (
+const WelcomeView = ({ announcements, loading, clubs }) => (
   <div className="w-full max-w-4xl mx-auto text-center pt-24 px-4">
     <h1 className="font-playfair text-5xl md:text-6xl font-bold text-white mb-4">WELCOME BACK</h1>
     <p className="font-inter text-lg text-white/80 mb-8">Here’s what’s happening in your clubs today!</p>
@@ -203,13 +216,27 @@ const WelcomeView = ({ announcements, loading }) => (
 );
 
 const DashboardPage = () => {
-  const [selectedClub, setSelectedClub] = useState('finite-loop');
+  const [selectedClub, setSelectedClub] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [view, setView] = useState('welcome');
   const [events, setEvents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [eventsLoading, setEventsLoading] = useState(true);
   const [announcementsLoading, setAnnouncementsLoading] = useState(true);
+  const { clubs, loading: clubsLoading } = useClubs();
+  useEffect(() => {
+    console.log('Clubs loading state:', clubsLoading, 'Clubs count:', clubs.length, 'Selected club:', selectedClub);
+    if (clubs.length > 0) {
+      console.log('First club data:', clubs[0]);
+    }
+    if (!clubsLoading && clubs.length > 0 && !selectedClub) {
+      const firstClubId = clubs[0].id || clubs[0].club_id;
+      console.log('Setting first club as selected:', firstClubId);
+      if (firstClubId) {
+        setSelectedClub(firstClubId);
+      }
+    }
+  }, [clubs, clubsLoading, selectedClub]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -222,23 +249,39 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchEvents(selectedClub);
+    if (selectedClub) {
+      fetchEvents(selectedClub);
+    }
   }, [selectedClub]);
 
   const fetchEvents = async (clubId) => {
-    setEventsLoading(true);
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('club_id', clubId)
-      .order('event_date', { ascending: false });
-    
-    if (error) {
-      console.error('Error fetching events:', error);
-    } else {
-      setEvents(data);
+    if (!clubId) {
+      console.log('No club ID provided, skipping fetch');
+      setEventsLoading(false);
+      return;
     }
-    setEventsLoading(false);
+    setEventsLoading(true);
+    console.log('Fetching events for club:', clubId);
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('club_id', clubId)
+        .order('event_date', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching events:', error);
+        setEvents([]);
+      } else {
+        console.log('Events fetched:', data);
+        setEvents(data || []);
+      }
+    } catch (err) {
+      console.error('Exception fetching events:', err);
+      setEvents([]);
+    } finally {
+      setEventsLoading(false);
+    }
   };
 
   const fetchAnnouncements = async () => {
@@ -277,7 +320,7 @@ const DashboardPage = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <WelcomeView announcements={announcements} loading={announcementsLoading} />
+              <WelcomeView announcements={announcements} loading={announcementsLoading} clubs={clubs} />
             </motion.div>
           ) : (
             <motion.div

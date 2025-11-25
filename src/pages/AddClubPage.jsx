@@ -143,8 +143,8 @@ const AddClubPage = () => {
       // Check if club already exists
       const { data: existingClub } = await supabase
         .from('clubs')
-        .select('club_id')
-        .eq('club_id', clubId)
+        .select('id')
+        .eq('name', clubName)
         .single();
 
       if (existingClub) {
@@ -154,13 +154,14 @@ const AddClubPage = () => {
       }
 
       // Insert new club
+      const clubUuid = crypto.randomUUID();
+      
       const { data, error } = await supabase
         .from('clubs')
         .insert({
+          id: clubUuid,
           name: clubName,
-          icon: selectedIcon,
-          club_id: clubId,
-          created_by: user.id
+          icon_name: selectedIcon
         })
         .select()
         .single();

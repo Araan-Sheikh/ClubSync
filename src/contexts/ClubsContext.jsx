@@ -11,25 +11,41 @@ export const ClubsProvider = ({ children }) => {
   const fetchClubs = async () => {
     setLoading(true);
     try {
+      console.log('Fetching clubs from database...');
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('User session:', session ? 'authenticated' : 'not authenticated');
+      if (!session) {
+        console.log('No session, using static clubs');
+        throw new Error('Not authenticated');
+      }
       const { data, error } = await supabase
         .from('clubs')
-        .select('*')
+        .select('id, name, icon_name, created_at')
         .order('created_at', { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+      console.log('Raw clubs data from DB:', data);
 
       // Transform data to include Icon component
-      const clubsWithIcons = data.map(club => ({
-        ...club,
-        id: club.club_id,
-        Icon: LucideIcons[club.icon] || LucideIcons.HelpCircle
-      }));
+      const clubsWithIcons = data.map(club => {
+        console.log('Processing club:', club);
+        const iconName = club.icon_name || club.icon || 'HelpCircle';
+        return {
+          ...club,
+          Icon: LucideIcons[iconName] || LucideIcons.HelpCircle
+        };
+      });
 
+      console.log('Transformed clubs:', clubsWithIcons);
       setClubs(clubsWithIcons);
     } catch (error) {
-      console.error('Error fetching clubs:', error);
+      console.error('Error fetching clubs, using fallback:', error);
       // Fallback to static clubs if database fetch fails
       const { clubs: staticClubs } = await import('../data/dashboardData');
+      console.log('Using static clubs:', staticClubs);
       setClubs(staticClubs);
     } finally {
       setLoading(false);
