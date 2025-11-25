@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, X, Calendar as CalendarIcon, MapPin, Clock } from 'lucide-react';
 import { supabase } from '../supabaseClient';
-import { clubs } from '../data/dashboardData';
+import { useClubs } from '../contexts/ClubsContext';
 
 const CalendarPage = () => {
   const navigate = useNavigate();
+  const { clubs } = useClubs();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);

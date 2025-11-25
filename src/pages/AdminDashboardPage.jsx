@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, User as UserIcon, LayoutGrid, CalendarPlus, BellPlus, Building2, Loader2, Link as LinkIcon } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { clubs } from '../data/dashboardData';
+import { useClubs } from '../contexts/ClubsContext';
 import { supabase } from '../supabaseClient';
 
 const AdminHeader = () => {
@@ -49,6 +49,7 @@ const GlassCard = ({ title, children, className, icon: Icon }) => (
 
 const AdminDashboardPage = () => {
   const { user, profile } = useAuth();
+  const { clubs, loading: clubsLoading } = useClubs();
   const [selectedClub, setSelectedClub] = useState('');
   const [feedback, setFeedback] = useState({ message: '', type: '' });
 
@@ -87,19 +88,25 @@ const AdminDashboardPage = () => {
                 <label htmlFor="club-select" className="font-inter text-sm font-medium text-[#260046]/80 mb-2 block">
                   Select club to create content for
                 </label>
-                <select
-                  id="club-select"
-                  value={selectedClub}
-                  onChange={(e) => setSelectedClub(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-white/50 border-2 border-transparent focus:border-violet-soft focus:bg-white focus:outline-none font-inter text-[#260046] transition-all"
-                >
-                  <option value="" disabled>-- Select a Club --</option>
-                  {clubs.map((club) => (
-                    <option key={club.id} value={club.id}>
-                      {club.name}
-                    </option>
-                  ))}
-                </select>
+                {clubsLoading ? (
+                  <div className="flex justify-center items-center py-4">
+                    <Loader2 className="w-6 h-6 text-[#260046] animate-spin" />
+                  </div>
+                ) : (
+                  <select
+                    id="club-select"
+                    value={selectedClub}
+                    onChange={(e) => setSelectedClub(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg bg-white/50 border-2 border-transparent focus:border-violet-soft focus:bg-white focus:outline-none font-inter text-[#260046] transition-all"
+                  >
+                    <option value="" disabled>-- Select a Club --</option>
+                    {clubs.map((club) => (
+                      <option key={club.id} value={club.id}>
+                        {club.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               
               {selectedClub && (
